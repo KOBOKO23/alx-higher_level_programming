@@ -2,19 +2,16 @@
 """Lists states based on a provided name"""
 
 import MySQLdb
-from sys import argv
+import sys
 
 def main():
     # Check if the correct number of arguments are provided
-    if len(argv) != 5:
+    if len(sys.argv) != 5:
         print("Usage: python script.py <username> <password> <database> <state_name>")
         return
 
     # Extract command-line arguments
-    username = argv[1]
-    password = argv[2]
-    database = argv[3]
-    state_name = argv[4]
+    username, password, database, state_name = sys.argv[1:5]
 
     try:
         # Connect to MySQL database
@@ -26,8 +23,8 @@ def main():
         # Create a cursor object
         cur = conn.cursor()
 
-        # SQL query with parameterization to avoid SQL injection
-        query = "SELECT * FROM states WHERE name LIKE BINARY %s ORDER BY id ASC"
+        # SQL query with parameterized query
+        query = "SELECT * FROM states WHERE name LIKE BINARY %s ORDER BY states.id ASC"
         cur.execute(query, (state_name,))
 
         # Fetch all rows
