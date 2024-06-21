@@ -1,49 +1,19 @@
 #!/usr/bin/python3
-"""Lists states based on a provided name"""
+"""Lists states"""
 
 import MySQLdb
-import sys
-
-def main():
-    # Check if the correct number of arguments are provided
-    if len(sys.argv) != 5:
-        print("Usage: python script.py <username> <password> <database> <state_name>")
-        return
-
-    # Extract command-line arguments
-    username, password, database, state_name = sys.argv[1:5]
-
-    try:
-        # Connect to MySQL database
-        conn = MySQLdb.connect(
-            host="localhost", port=3306, user=username, passwd=password,
-            db=database, charset="utf8"
-        )
-
-        # Create a cursor object
-        cur = conn.cursor()
-
-        # SQL query with parameterized query
-        query = "SELECT * FROM states WHERE name LIKE BINARY %s ORDER BY states.id ASC"
-        cur.execute(query, (state_name,))
-
-        # Fetch all rows
-        query_rows = cur.fetchall()
-
-        # Print each row
-        for row in query_rows:
-            print(row)
-
-    except MySQLdb.Error as e:
-        print(f"MySQLdb error: {e}")
-
-    finally:
-        # Close cursor and connection
-        if cur:
-            cur.close()
-        if conn:
-            conn.close()
+from sys import argv
 
 if __name__ == "__main__":
-    main()
-
+    conn = MySQLdb.connect(host="localhost", port=3306, user=argv[1],
+                           passwd=argv[2], db=argv[3], charset="utf8")
+    cur = conn.cursor()
+    query = """
+SELECT * FROM states WHERE name LIKE BINARY '{}' ORDER BY states.id ASC"""
+    query = query.format(argv[4])
+    cur.execute(query)
+    query_rows = cur.fetchall()
+    for row in query_rows:
+        print(row)
+    cur.close()
+    conn.close()
