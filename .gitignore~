@@ -1,0 +1,9 @@
+# Ignore directories
+0x00-python-hello_world/learning/
+0x01-python-if_else_loops_functions/learning/
+0x02-python-import_modules/__pycache__/
+
+# Ignore specific files
+0x02-python-import_modules/add_0.py
+0x02-python-import_modules/calculator_1.py
+0x02-python-import_modules/demo.py
